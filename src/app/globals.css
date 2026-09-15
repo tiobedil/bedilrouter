@@ -1,6 +1,27 @@
 /* source() sets scan base to src/ for both webpack + Turbopack; auto-detection still skips binaries + gitignore */
 @import "tailwindcss" source("../../");
 
+/* HeroUI v3 foundation (Fase 0 revamp): theme VARIABLES only (layer theme).
+   Deliberately NOT importing "@heroui/styles" fully or its Tailwind bridge
+   (themes/shared/theme.css): that bridge would resurrect currently-dead
+   utilities used in src (bg-background, border-accent, ...) with HeroUI
+   values and cause visual regression. Components opt in per-phase. */
+@import "@heroui/styles/themes/default/variables.css" layer(theme);
+
+/* ============================================================
+   Fase 0 seam: --brand (single hook for the future color picker).
+   HeroUI --accent follows --brand; default = preserved 9Router
+   brand #E56A4A (identical light + dark, as today).
+   ============================================================ */
+:root {
+  --brand: #E56A4A;
+  --accent: var(--brand);
+}
+
+.dark {
+  --accent: var(--brand);
+}
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* Hide icon ligature text until font is ready */
@@ -164,7 +185,7 @@ select {
   --color-text-main: var(--color-text-main);
   --color-text-muted: var(--color-text-muted);
   --color-text-subtle: var(--color-text-subtle);
-  --color-accent: var(--color-brand-500);
+  --color-accent: var(--brand);
   --color-danger: var(--color-danger);
   --color-success: var(--color-success);
   --color-warning: var(--color-warning);
