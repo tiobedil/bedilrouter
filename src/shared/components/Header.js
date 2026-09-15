@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
-import Link from "next/link";
+import { Breadcrumbs, Button } from "@heroui/react";
 import PropTypes from "prop-types";
 import ProviderIcon from "@/shared/components/ProviderIcon";
 import HeaderMenu from "@/shared/components/HeaderMenu";
@@ -231,38 +231,40 @@ export default function Header({ onMenuClick, showMenuButton = true }) {
       {/* Mobile menu button */}
       <div className="flex items-center gap-3 lg:hidden shrink-0">
         {showMenuButton && (
-          <button
-            onClick={onMenuClick}
+          <Button
+            isIconOnly
+            variant="ghost"
+            onPress={onMenuClick}
+            aria-label="Open navigation menu"
             className="text-text-main hover:text-primary transition-colors"
           >
             <span className="material-symbols-outlined">menu</span>
-          </button>
+          </Button>
         )}
       </div>
 
       {/* Page title with breadcrumbs */}
       <div className="flex flex-col min-w-0 flex-1">
         {breadcrumbs.length > 0 ? (
-          <div className="flex items-center gap-2">
-            {breadcrumbs.map((crumb, index) => (
-              <div
-                key={`${crumb.label}-${crumb.href || "current"}`}
-                className="flex items-center gap-2"
-              >
-                {index > 0 && (
-                  <span className="material-symbols-outlined text-text-muted text-base">
-                    chevron_right
-                  </span>
-                )}
-                {crumb.href ? (
-                  <Link
-                    href={crumb.href}
-                    className="text-text-muted hover:text-primary transition-colors"
-                  >
-                    {crumb.label}
-                  </Link>
-                ) : (
-                  <div className="flex items-center gap-2">
+          <Breadcrumbs
+            separator={
+              <span className="material-symbols-outlined text-text-muted text-base">
+                chevron_right
+              </span>
+            }
+          >
+            {breadcrumbs.map((crumb) =>
+              crumb.href ? (
+                <Breadcrumbs.Item
+                  key={`${crumb.label}-${crumb.href}`}
+                  href={crumb.href}
+                  className="text-text-muted hover:text-primary transition-colors"
+                >
+                  {crumb.label}
+                </Breadcrumbs.Item>
+              ) : (
+                <Breadcrumbs.Item key={`${crumb.label}-current`} className="text-text-main">
+                  <span className="flex items-center gap-2">
                     {crumb.image && (
                       <ProviderIcon
                         src={crumb.image}
@@ -272,14 +274,14 @@ export default function Header({ onMenuClick, showMenuButton = true }) {
                         fallbackText={crumb.label.slice(0, 2).toUpperCase()}
                       />
                     )}
-                    <h1 className="text-base lg:text-2xl font-semibold text-text-main tracking-tight truncate">
+                    <span className="text-base lg:text-2xl font-semibold tracking-tight truncate">
                       {translate(crumb.label)}
-                    </h1>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
+                    </span>
+                  </span>
+                </Breadcrumbs.Item>
+              )
+            )}
+          </Breadcrumbs>
         ) : title ? (
           <div>
             <div className="flex items-center gap-2">
