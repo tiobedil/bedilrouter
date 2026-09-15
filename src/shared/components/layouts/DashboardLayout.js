@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { Drawer, RouterProvider } from "@heroui/react";
 import { useNotificationStore } from "@/store/notificationStore";
 import Sidebar from "../Sidebar";
 import Header from "../Header";
@@ -34,10 +35,12 @@ function getToastStyle(type) {
 export default function DashboardLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
   const notifications = useNotificationStore((state) => state.notifications);
   const removeNotification = useNotificationStore((state) => state.removeNotification);
 
   return (
+    <RouterProvider navigate={(path) => router.push(String(path))}>
     <div className="flex h-screen w-full overflow-hidden bg-bg">
       <div className="fixed top-4 right-4 z-[80] flex w-[min(92vw,380px)] flex-col gap-2">
         {notifications.map((n) => {
@@ -68,26 +71,20 @@ export default function DashboardLayout({ children }) {
           );
         })}
       </div>
-      {/* Mobile sidebar overlay */}
-      {sidebarOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-black/20 lg:hidden"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
-
       {/* Sidebar - Desktop */}
       <div className="hidden lg:flex">
         <Sidebar />
       </div>
 
       {/* Sidebar - Mobile */}
-      <div
-        className={`fixed inset-y-0 left-0 z-50 transform lg:hidden transition-transform duration-300 ease-in-out ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
-      >
-        <Sidebar onClose={() => setSidebarOpen(false)} />
+      <div className="lg:hidden">
+        <Drawer.Backdrop isOpen={sidebarOpen} onOpenChange={setSidebarOpen} variant="transparent" className="bg-black/20">
+          <Drawer.Content placement="left">
+            <Drawer.Dialog aria-label="Dashboard navigation" className="p-0 bg-transparent shadow-none" style={{ "--visual-viewport-height": "100%" }}>
+              <Sidebar onClose={() => setSidebarOpen(false)} />
+            </Drawer.Dialog>
+          </Drawer.Content>
+        </Drawer.Backdrop>
       </div>
 
       {/* Main content */}
@@ -100,5 +97,6 @@ export default function DashboardLayout({ children }) {
         </div>
       </main>
     </div>
+    </RouterProvider>
   );
 }

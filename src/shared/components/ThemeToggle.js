@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@heroui/react";
 import { useTheme } from "@/shared/hooks/useTheme";
 import { cn } from "@/shared/utils/cn";
 
@@ -23,11 +24,13 @@ export default function ThemeToggle({ className, variant = "default" }) {
   };
 
   return (
-    <button
-      onClick={toggleTheme}
-      className={cn(variants[variant], className)}
+    <Button
+      isIconOnly
+      variant="ghost"
+      onPress={toggleTheme}
       aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
       title={`Switch to ${isDark ? "light" : "dark"} mode`}
+      className={cn(variants[variant], className)}
     >
       <span
         className={cn(
@@ -37,6 +40,6 @@ export default function ThemeToggle({ className, variant = "default" }) {
       >
         {isDark ? "light_mode" : "dark_mode"}
       </span>
-    </button>
+    </Button>
   );
 }
