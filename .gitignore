@@ -57,6 +57,8 @@ docs/images/*
 !docs/images/fase0-baseline-shell-dark.png
 !docs/images/fase1-shell-light.png
 !docs/images/fase1-shell-dark.png
+!docs/images/fase2-overview-light.png
+!docs/images/fase2-overview-dark.png
 test/*
 open-sse/test/*
 RM.vn.md

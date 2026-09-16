@@ -1,4 +1,5 @@
 export const NAV_ITEMS = [
+  { href: "/dashboard", label: "Overview", icon: "dashboard" },
   { href: "/dashboard/endpoint", label: "Endpoint & Key", icon: "api" },
   { href: "/dashboard/providers", label: "Providers", icon: "dns" },
   { href: "/dashboard/combos", label: "Combo & Vision Adapter", icon: "layers" },
@@ -36,8 +37,8 @@ export const COMBINED_WEB_ITEM = {
 export const TRANSLATOR_HREF = "/dashboard/translator";
 
 export function isActiveNav(pathname, href) {
-  if (href === "/dashboard/endpoint") {
-    return pathname === "/dashboard" || pathname.startsWith("/dashboard/endpoint");
+  if (href === "/dashboard") {
+    return pathname === "/dashboard";
   }
   return pathname.startsWith(href);
 }
