@@ -16,6 +16,7 @@ import {
 describe("shellNav (Fase 1 shell model)", () => {
   it("keeps the same primary nav entries", () => {
     expect(NAV_ITEMS.map((i) => i.href)).toEqual([
+      "/dashboard",
       "/dashboard/endpoint",
       "/dashboard/providers",
       "/dashboard/combos",
@@ -44,8 +45,9 @@ describe("shellNav (Fase 1 shell model)", () => {
     expect(COMBINED_WEB_ITEM.href).toBe("/dashboard/media-providers/web");
   });
 
-  it("endpoint entry stays active for the dashboard root", () => {
-    expect(isActiveNav("/dashboard", "/dashboard/endpoint")).toBe(true);
+  it("overview entry is active only for the dashboard root", () => {
+    expect(isActiveNav("/dashboard", "/dashboard")).toBe(true);
+    expect(isActiveNav("/dashboard/endpoint", "/dashboard")).toBe(false);
     expect(isActiveNav("/dashboard/endpoint", "/dashboard/endpoint")).toBe(true);
     expect(isActiveNav("/dashboard/providers", "/dashboard/endpoint")).toBe(false);
   });
@@ -78,6 +80,7 @@ describe("shellNav (Fase 1 shell model)", () => {
       translatorEnabled: true,
     });
     for (const href of [
+      "/dashboard",
       "/dashboard/endpoint",
       "/dashboard/providers",
       "/dashboard/combos",
